@@ -1,5 +1,7 @@
 # virtmon
 
+![](https://github.com/jd84/virtmon/workflows/Rust/badge.svg)
+
 virtmon is yet another monitoring tool.
 
 ## Features
