@@ -1,30 +1,37 @@
 pub mod cpu;
 pub mod process;
 
-use cpu::{Cpu, Cpus};
-use process::{Process, Processes};
+use cpu::Cpu;
+use process::Process;
 use sysinfo::{System, SystemExt};
 
 /// SystemData is a collection of all stats
 pub struct SystemData {
     system: System,
-    cpus: Cpus,
-    processes: Processes,
 }
 
 impl SystemData {
     pub fn refresh(&mut self) {
         self.system.refresh_all();
-        self.cpus.refresh(self.system.get_processors());
-        self.processes.refresh(self.system.get_processes());
     }
 
-    pub fn get_cpus(&self) -> &[Cpu] {
-        &self.cpus.get_all()
+    pub fn get_cpus(&self) -> Vec<Cpu> {
+        self.system
+            .get_processors()
+            .iter()
+            .map(|p| Cpu::from_raw(p))
+            .collect::<Vec<_>>()
     }
 
-    pub fn get_processes(&self) -> Vec<&Process> {
-        self.processes.get_sorted_cpu()
+    pub fn get_processes(&self) -> Vec<Process> {
+        let mut procs = self
+            .system
+            .get_processes()
+            .iter()
+            .map(|(_pid, p)| Process::from_raw(p))
+            .collect::<Vec<_>>();
+        procs.sort_by(|a, b| b.cpu_usage_raw().partial_cmp(&a.cpu_usage_raw()).unwrap());
+        procs
     }
 }
 
@@ -33,14 +40,7 @@ impl Default for SystemData {
         let mut system = System::new_all();
         system.refresh_all();
 
-        let cpus = Cpus::from_raw(system.get_processors());
-        let processes = Processes::from_raw(system.get_processes());
-
-        SystemData {
-            system,
-            cpus,
-            processes,
-        }
+        SystemData { system }
     }
 }
 

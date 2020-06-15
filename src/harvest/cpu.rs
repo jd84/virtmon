@@ -1,40 +1,25 @@
 use sysinfo::{Processor, ProcessorExt};
 
 /// Represents a single cpu or in mordern systems a single core
-pub struct Cpu {
-    pub name: String,
-    pub usage: f32,
+pub struct Cpu<'a> {
+    raw: &'a Processor,
+    name: String,
 }
 
-/// Collection of `Cpu`s
-pub struct Cpus {
-    cpus: Vec<Cpu>,
-}
-
-impl Cpus {
+impl<'a> Cpu<'a> {
     /// Create a collection from raw data
-    pub fn from_raw(processors: &[Processor]) -> Cpus {
-        let mut cpus = Vec::with_capacity(processors.len());
-        for processor in processors {
-            let cpu = Cpu {
-                name: processor.get_name().to_string(),
-                usage: processor.get_cpu_usage(),
-            };
-            cpus.push(cpu);
+    pub fn from_raw(processors: &'a Processor) -> Cpu<'a> {
+        Cpu {
+            raw: processors,
+            name: processors.get_name().to_string(),
         }
-        Cpus { cpus }
     }
 
-    pub fn get_all(&self) -> &[Cpu] {
-        &self.cpus
+    pub fn name(&self) -> &str {
+        &self.name
     }
 
-    /// Refresh internal metrics direct from raw data
-    pub fn refresh(&mut self, processors: &[Processor]) {
-        for (i, processor) in processors.iter().enumerate() {
-            if let Some(cpu) = self.cpus.get_mut(i) {
-                cpu.usage = processor.get_cpu_usage();
-            }
-        }
+    pub fn usage(&self) -> f32 {
+        self.raw.get_cpu_usage()
     }
 }

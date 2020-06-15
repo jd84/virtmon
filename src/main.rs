@@ -48,8 +48,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 .split(f.size());
 
             // draw all widgets
-            ui::draw_cpus(&mut f, all_cpus, chunks[0]);
-            ui::draw_processes(&mut f, sys_data.get_processes(), chunks[1]);
+            ui::draw_cpus(&mut f, &all_cpus, chunks[0]);
+            ui::draw_processes(&mut f, &sys_data.get_processes(), chunks[1]);
         })?;
 
         match events.next()? {
