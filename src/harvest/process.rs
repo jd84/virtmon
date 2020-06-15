@@ -1,5 +1,6 @@
 use sysinfo::{Process as SysProcess, ProcessExt};
 
+/// Process is the adapter class for `sysinfo::Process`
 pub struct Process<'a> {
     raw: &'a SysProcess,
     pid: String,
@@ -9,7 +10,7 @@ pub struct Process<'a> {
 }
 
 impl<'a> Process<'a> {
-    pub fn from_raw(p: &'a SysProcess) -> Process<'a> {
+    pub(crate) fn from_raw(p: &'a SysProcess) -> Process<'a> {
         Process {
             raw: p,
             pid: p.pid().to_string(),
@@ -41,5 +42,24 @@ impl<'a> Process<'a> {
 
     pub fn mem_usage(&self) -> &str {
         &self.mem_usage
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use sysinfo::{System, SystemExt};
+
+    #[test]
+    fn test_cpu() {
+        let mut sys = System::new_all();
+        sys.refresh_all();
+        let procs = sys
+            .get_processes()
+            .iter()
+            .map(|(_pid, p)| Process::from_raw(p))
+            .collect::<Vec<_>>();
+
+        assert_eq!(true, procs.len() > 0);
     }
 }
