@@ -9,24 +9,21 @@ use tui::{
     Frame,
 };
 
-struct ProcessTable {
+struct ProcessTable<'a> {
     state: TableState,
-    items: Vec<Vec<String>>,
+    items: Vec<Vec<&'a str>>,
 }
 
-impl ProcessTable {
-    fn new(processes: Vec<&Process>) -> ProcessTable {
+impl<'a> ProcessTable<'a> {
+    fn new(processes: &'a [Process]) -> ProcessTable<'a> {
         let mut items = Vec::new();
         for process in processes {
-            if process.status == "Unknown" {
-                continue;
-            }
-            let row: Vec<String> = vec![
-                process.pid.to_string(),
-                process.name.clone(),
-                process.status.clone(),
-                process.cpu_usage.to_string(),
-                process.memory.to_string(),
+            let row: Vec<&str> = vec![
+                process.pid(),
+                process.name(),
+                process.status(),
+                process.cpu_usage(),
+                process.mem_usage(),
             ];
             items.push(row);
         }
@@ -71,14 +68,14 @@ where
 
     for (i, cpu) in cpus.iter().enumerate() {
         let gauge = Gauge::default()
-            .block(Block::default().title(&cpu.name).borders(Borders::NONE))
+            .block(Block::default().title(&cpu.name()).borders(Borders::NONE))
             .style(Style::default().fg(Color::Yellow))
-            .percent(cpu.usage as u16);
+            .percent(cpu.usage() as u16);
         f.render_widget(gauge, chunks[i]);
     }
 }
 
-pub fn draw_processes<B>(f: &mut Frame<B>, processes: Vec<&Process>, area: Rect)
+pub fn draw_processes<B>(f: &mut Frame<B>, processes: &[Process], area: Rect)
 where
     B: Backend,
 {
