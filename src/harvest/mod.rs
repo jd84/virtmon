@@ -1,6 +1,7 @@
 pub mod cpu;
 pub mod process;
 
+use crate::net::client::HealthCheckServiceClient;
 use cpu::Cpu;
 use process::Process;
 use sysinfo::{System, SystemExt};
@@ -41,6 +42,22 @@ impl Default for SystemData {
         system.refresh_all();
 
         SystemData { system }
+    }
+}
+
+pub struct RemoteSystemData {
+    system: HealthCheckServiceClient,
+}
+
+impl RemoteSystemData {
+    pub async fn new() -> RemoteSystemData {
+        RemoteSystemData {
+            system: HealthCheckServiceClient::new().await.unwrap(),
+        }
+    }
+
+    pub async fn refresh(&mut self) {
+        self.system.ping().await.unwrap();
     }
 }
 

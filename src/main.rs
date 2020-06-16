@@ -1,8 +1,9 @@
 mod harvest;
+mod net;
 mod ui;
 mod util;
 
-use crate::harvest::SystemData;
+use crate::harvest::{RemoteSystemData, SystemData};
 use crate::util::event::{Event, Events};
 use crossterm::{
     event::{DisableMouseCapture, EnableMouseCapture, KeyCode},
@@ -18,7 +19,8 @@ use tui::{
     Terminal,
 };
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     set_panic_hook();
     let mut stdout = io::stdout();
     enable_raw_mode()?;
@@ -31,6 +33,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let events = Events::new();
     let mut sys_data = SystemData::default();
+    let mut r_sys_data = RemoteSystemData::new().await;
 
     loop {
         terminal.draw(|mut f| {
@@ -68,6 +71,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             },
             Event::Tick => {
                 sys_data.refresh();
+                r_sys_data.refresh().await;
             }
         }
     }
