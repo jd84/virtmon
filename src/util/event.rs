@@ -17,7 +17,7 @@ impl Default for Config {
     fn default() -> Config {
         Config {
             exit_key: KeyCode::Char('q'),
-            tick_rate: Duration::from_millis(1000),
+            tick_rate: Duration::from_millis(1500),
         }
     }
 }
