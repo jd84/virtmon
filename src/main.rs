@@ -1,9 +1,7 @@
-mod harvest;
-mod net;
 mod ui;
 mod util;
 
-use crate::harvest::{RemoteSystemData, SystemData};
+use harvest::{SystemData, RemoteSystemData};
 use crate::util::event::{Event, Events};
 use crossterm::{
     event::{DisableMouseCapture, EnableMouseCapture, KeyCode},

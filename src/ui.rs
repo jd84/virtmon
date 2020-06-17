@@ -1,5 +1,5 @@
-use crate::harvest::cpu::Cpu;
-use crate::harvest::process::Process;
+use harvest::cpu::Cpu;
+use harvest::process::Process;
 
 use tui::{
     backend::Backend,

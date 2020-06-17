@@ -314,6 +314,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "harvest"
+version = "0.1.0"
+dependencies = [
+ "prost",
+ "sysinfo",
+ "tonic",
+ "tonic-build",
+]
+
+[[package]]
 name = "heck"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -824,6 +834,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4c691c0e608126e00913e33f0ccf3727d5fc84573623b8d65b2df340b5201783"
 
 [[package]]
+name = "satellite"
+version = "0.1.0"
+dependencies = [
+ "prost",
+ "sysinfo",
+ "tokio",
+ "tonic",
+ "tonic-build",
+]
+
+[[package]]
 name = "scopeguard"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1274,6 +1295,7 @@ version = "0.1.0"
 dependencies = [
  "backtrace",
  "crossterm",
+ "harvest",
  "netmon-rust",
  "prost",
  "slab",

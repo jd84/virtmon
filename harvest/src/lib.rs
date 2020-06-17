@@ -1,7 +1,8 @@
 pub mod cpu;
 pub mod process;
+mod net;
 
-use crate::net::client::HealthCheckServiceClient;
+use net::HealthCheckServiceClient;
 use cpu::Cpu;
 use process::Process;
 use sysinfo::{System, SystemExt};
