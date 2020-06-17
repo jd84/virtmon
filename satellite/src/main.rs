@@ -26,7 +26,6 @@ impl HealthCheck for HealthCheckService {
     type GetCpusStream = mpsc::Receiver<Result<Cpu, Status>>;
 
     async fn ping(&self, request: Request<PingRequest>) -> Result<Response<PingReply>, Status> {
-        println!("Got a request={:?}", request);
         self.system.lock().await.refresh();
 
         let reply = PingReply {
@@ -38,8 +37,9 @@ impl HealthCheck for HealthCheckService {
 
     async fn get_cpus(
         &self,
-        _request: Request<Empty>,
+        request: Request<Empty>,
     ) -> Result<Response<Self::GetCpusStream>, Status> {
+        println!("Got a request={:?}", request);
         let (mut tx, rx) = mpsc::channel(4);
 
         let cpus = self

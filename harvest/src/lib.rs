@@ -2,7 +2,7 @@ pub mod cpu;
 mod net;
 pub mod process;
 
-use cpu::Cpu;
+use cpu::{Cpu, SysCpu};
 use net::client::HealthCheckServiceClient;
 use process::Process;
 use sysinfo::{System, SystemExt};
@@ -59,6 +59,11 @@ impl RemoteSystemData {
 
     pub async fn refresh(&mut self) {
         self.system.ping().await.unwrap();
+        self.system.rpc_get_cpus().await.unwrap();
+    }
+
+    pub fn get_cpus(&self) -> &[impl SysCpu] {
+        self.system.get_cpus()
     }
 }
 

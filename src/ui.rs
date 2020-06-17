@@ -35,9 +35,10 @@ impl<'a> ProcessTable<'a> {
     }
 }
 
-pub fn draw_cpus<B>(f: &mut Frame<B>, cpus: &[Cpu], area: Rect)
+pub fn draw_cpus<B, C>(f: &mut Frame<B>, cpus: &[C], area: Rect)
 where
     B: Backend,
+    C: SysCpu,
 {
     let (half0, half1) = cpus.split_at(cpus.len() / 2);
     let block = Block::default().borders(Borders::ALL).title("CPU");
@@ -52,9 +53,10 @@ where
     draw_cpu_block(f, half1, chunks[1]);
 }
 
-fn draw_cpu_block<B>(f: &mut Frame<B>, cpus: &[Cpu], area: Rect)
+fn draw_cpu_block<B, C>(f: &mut Frame<B>, cpus: &[C], area: Rect)
 where
     B: Backend,
+    C: SysCpu,
 {
     let mut constraints = Vec::new();
     for _ in 0..cpus.len() {

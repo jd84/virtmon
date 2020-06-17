@@ -35,7 +35,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     loop {
         terminal.draw(|mut f| {
-            let all_cpus = sys_data.get_cpus();
+            let all_cpus = r_sys_data.get_cpus();
 
             // setup base layout
             let chunks = Layout::default()
