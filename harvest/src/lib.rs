@@ -1,8 +1,12 @@
+pub(crate) mod health_check {
+    tonic::include_proto!("healthcheck");
+}
+
 pub mod cpu;
 mod net;
 pub mod process;
 
-use cpu::{Cpu, SysCpu};
+use cpu::SysCpu;
 use net::client::HealthCheckServiceClient;
 use process::Process;
 use sysinfo::{System, SystemExt};
@@ -17,11 +21,11 @@ impl SystemData {
         self.system.refresh_all();
     }
 
-    pub fn get_cpus(&self) -> Vec<Cpu> {
+    pub fn get_cpus<'a>(&'a self) -> Vec<impl SysCpu + 'a> {
         self.system
             .get_processors()
             .iter()
-            .map(|p| Cpu::from_raw(p))
+            .map(|p| cpu::Cpu::from_raw(p))
             .collect::<Vec<_>>()
     }
 
