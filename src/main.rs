@@ -1,7 +1,6 @@
 mod ui;
 mod util;
 
-use harvest::{SystemData, RemoteSystemData};
 use crate::util::event::{Event, Events};
 use crossterm::{
     event::{DisableMouseCapture, EnableMouseCapture, KeyCode},
@@ -9,6 +8,7 @@ use crossterm::{
     style::Print,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
+use harvest::{RemoteSystemData, SystemData};
 use std::io::{self, Write};
 use std::panic;
 use tui::{

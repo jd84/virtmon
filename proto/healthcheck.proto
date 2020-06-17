@@ -3,7 +3,10 @@ package healthcheck;
 
 service HealthCheck {
 	rpc Ping(PingRequest) returns (PingReply);
+	rpc GetCpus(Empty) returns (stream Cpu);
 }
+
+message Empty {}
 
 message PingRequest {
 	string name = 1;
@@ -11,4 +14,9 @@ message PingRequest {
 
 message PingReply {
 	string name = 1;
+}
+
+message Cpu {
+	string name = 1;
+	float usage = 2;
 }

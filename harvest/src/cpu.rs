@@ -1,5 +1,10 @@
 use sysinfo::{Processor, ProcessorExt};
 
+pub trait SysCpu {
+    fn name(&self) -> &str;
+    fn usage(&self) -> f32;
+}
+
 /// Represents a single cpu or in mordern systems a single core
 pub struct Cpu<'a> {
     raw: &'a Processor,
@@ -14,12 +19,14 @@ impl<'a> Cpu<'a> {
             name: processors.get_name().to_string(),
         }
     }
+}
 
-    pub fn name(&self) -> &str {
+impl<'a> SysCpu for Cpu<'a> {
+    fn name(&self) -> &str {
         &self.name
     }
 
-    pub fn usage(&self) -> f32 {
+    fn usage(&self) -> f32 {
         self.raw.get_cpu_usage()
     }
 }

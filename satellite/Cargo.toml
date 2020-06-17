@@ -8,6 +8,7 @@ edition = "2018"
 
 
 [dependencies]
+harvest = { version = "0.1.0", path = "../harvest" }
 sysinfo = "0.14.5"
 tonic = "0.2"
 prost = "0.6"

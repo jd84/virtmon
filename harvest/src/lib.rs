@@ -1,9 +1,9 @@
 pub mod cpu;
-pub mod process;
 mod net;
+pub mod process;
 
-use net::HealthCheckServiceClient;
 use cpu::Cpu;
+use net::client::HealthCheckServiceClient;
 use process::Process;
 use sysinfo::{System, SystemExt};
 

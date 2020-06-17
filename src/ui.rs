@@ -1,4 +1,4 @@
-use harvest::cpu::Cpu;
+use harvest::cpu::{Cpu, SysCpu};
 use harvest::process::Process;
 
 use tui::{

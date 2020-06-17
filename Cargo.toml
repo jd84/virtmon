@@ -21,7 +21,7 @@ name = "virtmon"
 path = "src/main.rs"
 
 [dependencies]
-harvest = { version = "0.1.0", path = "harvest/" }
+harvest = { version = "0.1.0", path = "harvest" }
 sysinfo = "0.14.5"
 tui = { version = "0.9.5", default-features = false, features = ["crossterm"] }
 crossterm = "0.17.5"
