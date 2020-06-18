@@ -1,10 +1,10 @@
 pub(crate) mod health_check {
     tonic::include_proto!("healthcheck");
 }
-
 pub mod cpu;
 mod net;
 pub mod process;
+pub mod system;
 
 use cpu::SysCpu;
 use net::client::HealthCheckServiceClient;
@@ -50,26 +50,26 @@ impl Default for SystemData {
     }
 }
 
-pub struct RemoteSystemData {
-    system: HealthCheckServiceClient,
-}
+// pub struct RemoteSystemData {
+//     system: HealthCheckServiceClient,
+// }
 
-impl RemoteSystemData {
-    pub async fn new() -> RemoteSystemData {
-        RemoteSystemData {
-            system: HealthCheckServiceClient::new().await.unwrap(),
-        }
-    }
+// impl RemoteSystemData {
+//     pub async fn new() -> RemoteSystemData {
+//         RemoteSystemData {
+//             system: HealthCheckServiceClient::new().await.unwrap(),
+//         }
+//     }
 
-    pub async fn refresh(&mut self) {
-        self.system.ping().await.unwrap();
-        self.system.rpc_get_cpus().await.unwrap();
-    }
+//     pub async fn refresh(&mut self) {
+//         self.system.ping().await.unwrap();
+//         self.system.rpc_get_cpus().await.unwrap();
+//     }
 
-    pub fn get_cpus(&self) -> &[impl SysCpu] {
-        self.system.get_cpus()
-    }
-}
+//     pub fn get_cpus(&self) -> &[impl SysCpu] {
+//         self.system.get_cpus()
+//     }
+// }
 
 #[cfg(test)]
 mod test {

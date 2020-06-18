@@ -8,7 +8,8 @@ use crossterm::{
     style::Print,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
-use harvest::{RemoteSystemData, SystemData};
+use harvest::system::{RemoteSystem, SystemData};
+use harvest::SystemData as LocalSystem;
 use std::io::{self, Write};
 use std::panic;
 use tui::{
@@ -30,8 +31,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     terminal.clear()?;
 
     let events = Events::new();
-    let mut sys_data = SystemData::default();
-    let mut r_sys_data = RemoteSystemData::new().await;
+    let mut sys_data = LocalSystem::default();
+    let mut r_sys_data = RemoteSystem::new().await;
 
     loop {
         terminal.draw(|mut f| {

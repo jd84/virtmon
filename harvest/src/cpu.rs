@@ -6,28 +6,28 @@ pub trait SysCpu {
 }
 
 /// Represents a single cpu or in mordern systems a single core
-pub struct Cpu<'a> {
-    raw: &'a Processor,
+pub struct Cpu {
     name: String,
+    usage: f32,
 }
 
-impl<'a> Cpu<'a> {
+impl Cpu {
     /// Create a collection from raw data
-    pub fn from_raw(processors: &'a Processor) -> Cpu<'a> {
+    pub fn from_raw(p: &Processor) -> Cpu {
         Cpu {
-            raw: processors,
-            name: processors.get_name().to_string(),
+            name: p.get_name().into(),
+            usage: p.get_cpu_usage(),
         }
     }
 }
 
-impl<'a> SysCpu for Cpu<'a> {
+impl SysCpu for Cpu {
     fn name(&self) -> &str {
         &self.name
     }
 
     fn usage(&self) -> f32 {
-        self.raw.get_cpu_usage()
+        self.usage
     }
 }
 
@@ -43,7 +43,7 @@ mod tests {
         let cpus = sys
             .get_processors()
             .iter()
-            .map(|p| Cpu::from_raw(p))
+            .map(|p| Cpu::from_raw(&p))
             .collect::<Vec<_>>();
 
         assert_eq!(true, cpus.len() > 0);
