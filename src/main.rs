@@ -8,7 +8,7 @@ use crossterm::{
     style::Print,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
-use harvest::system::{RemoteSystem, SystemData};
+use harvest::system::{LocalSystemData, RemoteSystem, SystemData, SystemManager};
 use harvest::SystemData as LocalSystem;
 use std::io::{self, Write};
 use std::panic;
@@ -31,12 +31,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     terminal.clear()?;
 
     let events = Events::new();
+    let mut sys_local = SystemManager::new(LocalSystemData::default());
+    let mut sys_remote = SystemManager::new(RemoteSystem::new().await);
     let mut sys_data = LocalSystem::default();
-    let mut r_sys_data = RemoteSystem::new().await;
 
     loop {
         terminal.draw(|mut f| {
-            let all_cpus = r_sys_data.get_cpus();
+            let all_cpus = sys_remote.get_cpus();
 
             // setup base layout
             let chunks = Layout::default()
@@ -70,7 +71,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             },
             Event::Tick => {
                 sys_data.refresh();
-                r_sys_data.refresh().await;
+                sys_local.refresh_all().await;
+                sys_remote.refresh_all().await;
             }
         }
     }

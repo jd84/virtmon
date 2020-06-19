@@ -11,6 +11,7 @@ sysinfo = "0.14.5"
 tonic = "0.2"
 prost = "0.6"
 async-trait = "0.1.35"
+tokio = { version = "0.2", features = ["rt-core"] }
 
 [build-dependencies]
 tonic-build = "0.2"

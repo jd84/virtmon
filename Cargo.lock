@@ -320,6 +320,7 @@ dependencies = [
  "async-trait",
  "prost",
  "sysinfo",
+ "tokio",
  "tonic",
  "tonic-build",
 ]
