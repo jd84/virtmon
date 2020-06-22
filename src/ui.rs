@@ -1,4 +1,4 @@
-use harvest::cpu::{Cpu, SysCpu};
+use harvest::cpu::SysCpu;
 use harvest::process::Process;
 
 use tui::{
@@ -10,7 +10,7 @@ use tui::{
 };
 
 struct ProcessTable<'a> {
-    state: TableState,
+    _state: TableState,
     items: Vec<Vec<&'a str>>,
 }
 
@@ -29,7 +29,7 @@ impl<'a> ProcessTable<'a> {
         }
 
         ProcessTable {
-            state: TableState::default(),
+            _state: TableState::default(),
             items,
         }
     }

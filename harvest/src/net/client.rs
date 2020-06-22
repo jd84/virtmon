@@ -40,7 +40,7 @@ impl HealthCheckServiceClient {
     }
 
     pub async fn rpc_get_cpus(&mut self) -> Result<(), Status> {
-        self.cpus.clear();
+        let mut cpus = Vec::new();
         let mut stream = self
             .client
             .get_cpus(tonic::Request::new(Empty {}))
@@ -48,8 +48,9 @@ impl HealthCheckServiceClient {
             .into_inner();
 
         while let Some(cpu) = stream.message().await? {
-            self.cpus.push(cpu);
+            cpus.push(cpu);
         }
+        self.cpus = cpus;
         Ok(())
     }
 

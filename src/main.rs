@@ -8,7 +8,7 @@ use crossterm::{
     style::Print,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
-use harvest::system::{LocalSystemData, RemoteSystem, SystemData, SystemManager};
+use harvest::system::{LocalSystemData, RemoteSystem, SystemManager};
 use harvest::SystemData as LocalSystem;
 use std::io::{self, Write};
 use std::panic;
@@ -71,8 +71,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             },
             Event::Tick => {
                 sys_data.refresh();
-                sys_local.refresh_all().await;
-                sys_remote.refresh_all().await;
+                sys_local.refresh_all().await.unwrap();
+                sys_remote.refresh_all().await.unwrap();
             }
         }
     }

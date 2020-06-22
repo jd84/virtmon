@@ -70,12 +70,6 @@ impl RemoteSystem {
             system: HealthCheckServiceClient::new().await.unwrap(),
         }
     }
-
-    pub async fn refresh_all(&mut self) -> Result<(), Box<dyn std::error::Error>> {
-        self.system.ping().await?;
-        self.system.rpc_get_cpus().await?;
-        Ok(())
-    }
 }
 
 #[async_trait]
@@ -83,6 +77,7 @@ impl SystemData for RemoteSystem {
     type Cpu = NetCpu;
 
     async fn refresh(&mut self) -> Result<(), Box<dyn std::error::Error>> {
+        self.system.ping().await?;
         self.system.rpc_get_cpus().await?;
         Ok(())
     }

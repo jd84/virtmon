@@ -25,7 +25,7 @@ impl Default for HealthCheckService {
 impl HealthCheck for HealthCheckService {
     type GetCpusStream = mpsc::Receiver<Result<Cpu, Status>>;
 
-    async fn ping(&self, request: Request<PingRequest>) -> Result<Response<PingReply>, Status> {
+    async fn ping(&self, _request: Request<PingRequest>) -> Result<Response<PingReply>, Status> {
         self.system.lock().await.refresh();
 
         let reply = PingReply {
